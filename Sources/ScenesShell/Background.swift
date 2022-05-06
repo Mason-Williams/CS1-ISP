@@ -22,14 +22,19 @@ class Background : RenderableEntity {
     let bladee : Image
     var width = 0
     var height = 0
-    
+    let background : Audio
+    var isBackgroundPlaying = false
     
     init() {
         guard let bladeeURL = URL(string:"https://codermerlin.com/users/mason-williams/ispbackground.png") else {
             fatalError("Failed to create URL for bladee")
         }
+        guard let backgroundURL = URL(string:"https://codermerlin.com/users/mason-williams/benice2me.mp3") else {
+            fatalError("Failed to create URL for background")
+        }
         // Using a meaningful name can be helpful for debugging
-        
+        background = Audio(sourceURL:backgroundURL, shouldLoop:true)
+    
         bladee = Image(sourceURL : bladeeURL)
         super.init(name:"Background")
     }
@@ -48,7 +53,7 @@ class Background : RenderableEntity {
         canvas.setup(bladee)
         width = canvasSize.width
         height = canvasSize.height
-        
+        canvas.setup(background)
     }
 
     override func render(canvas:Canvas) {
@@ -57,12 +62,15 @@ class Background : RenderableEntity {
             bladee.renderMode = .destinationRect(Rect(topLeft:Point(x:0, y:0), size:Size(width:width, height:height)))
             canvas.render(bladee)
         
-
+            
 
     }
 
     
-
+        if !isBackgroundPlaying && background.isReady {
+            canvas.render(background)
+            isBackgroundPlaying = true
+        }
     
       
 
