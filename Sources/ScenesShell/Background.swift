@@ -6,7 +6,7 @@ import Igis
  This class is responsible for rendering the background.
  */
 
-
+//hope you have fun playing our game
 class Background : RenderableEntity {
     func renderBuildingA(canvas: Canvas, rect: Rect, color: Color.Name){
         let rectangle = Rectangle(rect: rect, fillMode: .fill)
