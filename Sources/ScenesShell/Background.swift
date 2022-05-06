@@ -19,13 +19,19 @@ class Background : RenderableEntity {
         let fill = FillStyle(color : Color(color))
         canvas.render(fill, rectangle)
     }
-    
+    let bladee : Image
+    var width = 0
+    var height = 0
     
     
     init() {
+        guard let bladeeURL = URL(string:"https://codermerlin.com/users/mason-williams/ispbackground.png") else {
+            fatalError("Failed to create URL for bladee")
+        }
         // Using a meaningful name can be helpful for debugging
-        super.init(name:"Background")
         
+        bladee = Image(sourceURL : bladeeURL)
+        super.init(name:"Background")
     }
 
     func clearCanvas(canvas:Canvas) {
@@ -36,25 +42,23 @@ class Background : RenderableEntity {
         }
     }
 
-    override func render(canvas:Canvas) {
-        //    clearCanvas(canvas:canvas)
-        let buildingRectA = Rect(topLeft: Point(x: 0, y:0), size: Size(width: 4000,height: 1000))
-        
-        renderBuildingA(canvas: canvas, rect: buildingRectA, color: .green)
-
-        let buildingRectB = Rect(topLeft: Point(x:0, y: 0), size: Size(width: 4000,height: 700))
-        
-        renderBuildingB(canvas: canvas, rect: buildingRectB, color: .blue)
-
-        let ellipse = Ellipse(center:Point(x:400, y:800), radiusX:200, radiusY:75, fillMode: .fill)
-        canvas.render(ellipse)
-
-
-    }
+    
 
     override func setup(canvasSize:Size, canvas:Canvas) {
+        canvas.setup(bladee)
+        width = canvasSize.width
+        height = canvasSize.height
         
+    }
+
+    override func render(canvas:Canvas) {
+        clearCanvas(canvas:canvas)
+        if bladee.isReady {
+            bladee.renderMode = .destinationRect(Rect(topLeft:Point(x:0, y:0), size:Size(width:width, height:height)))
+            canvas.render(bladee)
         
+
+
     }
 
     
@@ -65,4 +69,4 @@ class Background : RenderableEntity {
 
     
 }
-
+}
